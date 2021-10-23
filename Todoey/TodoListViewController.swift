@@ -9,11 +9,21 @@
 import UIKit
 
 class TodoListViewController: UITableViewController {
+    
+    private let todoListKey = "todoListKey"
 
     private var itens = ["Find Mike", "Buy eggos", "Destroy Demogorgon"]
     
+    private lazy var userDefaults:UserDefaults = {
+        return UserDefaults.standard
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if let itens = userDefaults.array(forKey: todoListKey) as? [String] {
+            self.itens = itens
+        }
     }
 
 
@@ -47,7 +57,7 @@ class TodoListViewController: UITableViewController {
         
         tableView.deselectRow(at: indexPath, animated: true)
     }
-    
+                
     //MARK - Add Itens
     
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
@@ -60,6 +70,7 @@ class TodoListViewController: UITableViewController {
             
             if let text = finalText.text {
                 self.itens.append(text)
+                self.userDefaults.setValue(self.itens, forKey: self.todoListKey)
                 self.tableView.reloadData()
             }
         }
