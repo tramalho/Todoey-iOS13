@@ -14,16 +14,17 @@ class TodoListViewController: UITableViewController {
 
     private var itens = [Item(title: "Find Mike"), Item(title: "Buy eggos"), Item(title: "Destroy Demogorgon")]
     
-    private lazy var userDefaults:UserDefaults = {
-        return UserDefaults.standard
+    private lazy var storage: Repository = {
+        return Repository()
     }()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let itens = userDefaults.array(forKey: todoListKey) as? [Item] {
-            self.itens = itens
-        }
+//        if let itens = userDefaults.array(forKey: todoListKey) as? [Item] {
+//            self.itens = itens
+//        }
     }
 
 
@@ -52,8 +53,8 @@ class TodoListViewController: UITableViewController {
         let item = itens[indexPath.row]
         
         item.done = !item.done
-        
-        tableView.reloadData()
+                
+        save()
         
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -70,8 +71,7 @@ class TodoListViewController: UITableViewController {
             
             if let text = finalText.text {
                 self.itens.append(Item(title: text))
-                self.userDefaults.setValue(self.itens, forKey: self.todoListKey)
-                self.tableView.reloadData()
+                self.save()
             }
         }
         
@@ -84,6 +84,11 @@ class TodoListViewController: UITableViewController {
         
         present(alert, animated: true, completion: nil)
         
+    }
+    
+    private func save() {
+        self.storage.put(data: self.itens)
+        self.tableView.reloadData()
     }
 }
 
