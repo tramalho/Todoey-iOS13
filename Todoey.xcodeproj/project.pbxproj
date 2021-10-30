@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		905E49B0272A200A004477E6 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 905E49AF272A200A004477E6 /* Repository.swift */; };
+		905E49B0272A200A004477E6 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 905E49AF272A200A004477E6 /* Storage.swift */; };
 		907242A3272614A200224B95 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907242A2272614A200224B95 /* Item.swift */; };
 		EB2BE4FA239524DB00FB933B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2BE4F9239524DB00FB933B /* AppDelegate.swift */; };
 		EB2BE4FE239524DB00FB933B /* TodoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2BE4FD239524DB00FB933B /* TodoListViewController.swift */; };
@@ -17,7 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		905E49AF272A200A004477E6 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
+		905E49AF272A200A004477E6 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		907242A2272614A200224B95 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		EB2BE4F6239524DB00FB933B /* Todoey.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Todoey.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB2BE4F9239524DB00FB933B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -43,7 +43,7 @@
 			isa = PBXGroup;
 			children = (
 				907242A2272614A200224B95 /* Item.swift */,
-				905E49AF272A200A004477E6 /* Repository.swift */,
+				905E49AF272A200A004477E6 /* Storage.swift */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -168,7 +168,7 @@
 				EB2BE4FE239524DB00FB933B /* TodoListViewController.swift in Sources */,
 				907242A3272614A200224B95 /* Item.swift in Sources */,
 				EB2BE4FA239524DB00FB933B /* AppDelegate.swift in Sources */,
-				905E49B0272A200A004477E6 /* Repository.swift in Sources */,
+				905E49B0272A200A004477E6 /* Storage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

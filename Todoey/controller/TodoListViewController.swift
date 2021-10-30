@@ -14,17 +14,17 @@ class TodoListViewController: UITableViewController {
 
     private var itens = [Item(title: "Find Mike"), Item(title: "Buy eggos"), Item(title: "Destroy Demogorgon")]
     
-    private lazy var storage: Repository = {
-        return Repository()
+    private lazy var storage: Storage = {
+        return Storage()
     }()
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        if let itens = userDefaults.array(forKey: todoListKey) as? [Item] {
-//            self.itens = itens
-//        }
+        if let safeItens:[Item] = storage.get() {
+            self.itens = safeItens
+        }
     }
 
 

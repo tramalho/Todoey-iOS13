@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class Repository {
+class Storage {
         
     
     private lazy var path: URL? = {
@@ -35,5 +35,19 @@ class Repository {
         } catch  {
             print(error.localizedDescription)
         }
+    }
+    
+    func get<T: Codable>() -> [T]? {
+        let decoder = PropertyListDecoder()
+        var response: [T]? = nil
+        do {
+            if let data = try? Data(contentsOf: path!) {
+                response = try decoder.decode([T].self, from: data)
+            }
+        } catch  {
+            print(error.localizedDescription)
+        }
+        
+        return response
     }
 }
