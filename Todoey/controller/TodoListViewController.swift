@@ -12,7 +12,7 @@ class TodoListViewController: UITableViewController {
     
     private let todoListKey = "todoListKey"
 
-    private var itens = [Item(title: "Find Mike"), Item(title: "Buy eggos"), Item(title: "Destroy Demogorgon")]
+    private var itens: [Item] = []
     
     private lazy var storage: Storage = {
         return Storage()
