@@ -22,9 +22,9 @@ class TodoListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let safeItens:[Item] = storage.get() {
-            self.itens = safeItens
-        }
+//        if let safeItens:[Item] = storage.get() {
+//            self.itens = safeItens
+//        }
     }
 
 
@@ -70,7 +70,12 @@ class TodoListViewController: UITableViewController {
         let action = UIAlertAction(title: "Add", style: .default) { action in
             
             if let text = finalText.text {
-                self.itens.append(Item(title: text))
+                
+                let item = Item(context: self.storage.context)
+                item.title = text
+                item.done = false
+                
+                self.itens.append(item)
                 self.save()
             }
         }
@@ -87,7 +92,7 @@ class TodoListViewController: UITableViewController {
     }
     
     private func save() {
-        self.storage.put(data: self.itens)
+        self.storage.save()
         self.tableView.reloadData()
     }
 }
