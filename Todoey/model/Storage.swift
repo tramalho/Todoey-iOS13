@@ -31,17 +31,16 @@ class Storage {
         }
     }
     
-//    func get<T: Codable>() -> [T]? {
-//        let decoder = PropertyListDecoder()
-//        var response: [T]? = nil
-//        do {
-//            if let data = try? Data(contentsOf: path!) {
-//                response = try decoder.decode([T].self, from: data)
-//            }
-//        } catch  {
-//            print(error.localizedDescription)
-//        }
-//
-//        return response
-//    }
+    func load() -> [Item] {
+        var itens: [Item] = []
+        
+        do {
+            let request: NSFetchRequest<Item> = Item.fetchRequest()
+            itens = try context.fetch(request)
+        } catch  {
+            print(error.localizedDescription)
+        }
+
+        return itens
+    }
 }

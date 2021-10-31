@@ -10,8 +10,6 @@ import UIKit
 
 class TodoListViewController: UITableViewController {
     
-    private let todoListKey = "todoListKey"
-
     private var itens: [Item] = []
     
     private lazy var storage: Storage = {
@@ -22,9 +20,7 @@ class TodoListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        if let safeItens:[Item] = storage.get() {
-//            self.itens = safeItens
-//        }
+        itens = storage.load()
     }
 
 
