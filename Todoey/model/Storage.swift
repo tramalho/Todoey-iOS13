@@ -32,15 +32,29 @@ class Storage {
     }
     
     func load() -> [Item] {
+        return findByRequest(request: Item.fetchRequest())
+    }
+    
+    func loadBy(text: String) -> [Item] {
+        
+        let request: NSFetchRequest<Item> = Item.fetchRequest()
+        
+        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", text)
+        
+        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+        
+        return findByRequest(request: request)
+    }
+    
+    private func findByRequest(request: NSFetchRequest<Item>) -> [Item] {
         var itens: [Item] = []
         
         do {
-            let request: NSFetchRequest<Item> = Item.fetchRequest()
             itens = try context.fetch(request)
         } catch  {
             print(error.localizedDescription)
         }
-
+        
         return itens
     }
 }

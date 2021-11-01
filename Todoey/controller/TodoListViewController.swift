@@ -19,7 +19,6 @@ class TodoListViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         itens = storage.load()
     }
 
@@ -93,3 +92,18 @@ class TodoListViewController: UITableViewController {
     }
 }
 
+//MARK - SearchBar Delegate Methods
+
+extension TodoListViewController: UISearchBarDelegate {
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        
+        if let safeText = searchBar.text {
+            itens = storage.loadBy(text: safeText)
+        } else {
+            itens = storage.load()
+        }
+        
+        tableView.reloadData()
+    }
+}
