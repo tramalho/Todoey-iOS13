@@ -90,6 +90,16 @@ class TodoListViewController: UITableViewController {
         self.storage.save()
         self.tableView.reloadData()
     }
+    
+    private func loadItens(searchText: String? = nil) {
+        if let safeText = searchText {
+            itens = storage.loadBy(text: safeText)
+        } else {
+            itens = storage.load()
+        }
+        
+        tableView.reloadData()
+    }
 }
 
 //MARK - SearchBar Delegate Methods
@@ -98,12 +108,19 @@ extension TodoListViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
-        if let safeText = searchBar.text {
-            itens = storage.loadBy(text: safeText)
-        } else {
-            itens = storage.load()
-        }
+        loadItens(searchText: searchBar.text)
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
-        tableView.reloadData()
+        if searchText.isEmpty {
+            loadItens()
+            
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()
+            }
+        } else {
+            loadItens(searchText: searchText)
+        }
     }
 }

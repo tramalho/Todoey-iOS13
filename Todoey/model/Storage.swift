@@ -25,7 +25,6 @@ class Storage {
         
         do {
             try context.save()
-            print("success save")
         } catch  {
             print(error.localizedDescription)
         }
