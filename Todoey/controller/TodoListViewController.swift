@@ -19,7 +19,7 @@ class TodoListViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        itens = storage.load()
+        itens = storage.loadItens()
     }
 
 
@@ -42,7 +42,6 @@ class TodoListViewController: UITableViewController {
     }
     
     //MARK - Tableview Delegate Methods
-    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let item = itens[indexPath.row]
@@ -93,9 +92,9 @@ class TodoListViewController: UITableViewController {
     
     private func loadItens(searchText: String? = nil) {
         if let safeText = searchText {
-            itens = storage.loadBy(text: safeText)
+            itens = storage.loadItensBy(text: safeText)
         } else {
-            itens = storage.load()
+            itens = storage.loadItens()
         }
         
         tableView.reloadData()

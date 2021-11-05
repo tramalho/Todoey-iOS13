@@ -30,11 +30,11 @@ class Storage {
         }
     }
     
-    func load() -> [Item] {
+    func loadItens() -> [Item] {
         return findByRequest(request: Item.fetchRequest())
     }
     
-    func loadBy(text: String) -> [Item] {
+    func loadItensBy(text: String) -> [Item] {
         
         let request: NSFetchRequest<Item> = Item.fetchRequest()
         
@@ -45,8 +45,12 @@ class Storage {
         return findByRequest(request: request)
     }
     
-    private func findByRequest(request: NSFetchRequest<Item>) -> [Item] {
-        var itens: [Item] = []
+    func loadCategories() -> [Category] {
+        return findByRequest(request: Category.fetchRequest())
+    }
+    
+    private func findByRequest<T>(request: NSFetchRequest<T>) -> [T] {
+        var itens: [T] = []
         
         do {
             itens = try context.fetch(request)
@@ -55,5 +59,5 @@ class Storage {
         }
         
         return itens
-    }
+}
 }
