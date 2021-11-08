@@ -10,6 +10,8 @@ import UIKit
 
 class TodoListViewController: UITableViewController {
     
+    var selectedCategory: Category? = nil
+    
     private var itens: [Item] = []
     
     private lazy var storage: Storage = {
@@ -19,7 +21,7 @@ class TodoListViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        itens = storage.loadItens()
+        loadItens()
     }
 
 
@@ -68,6 +70,7 @@ class TodoListViewController: UITableViewController {
                 let item = Item(context: self.storage.context)
                 item.title = text
                 item.done = false
+                item.parentCategory = self.selectedCategory
                 
                 self.itens.append(item)
                 self.save()
@@ -92,9 +95,9 @@ class TodoListViewController: UITableViewController {
     
     private func loadItens(searchText: String? = nil) {
         if let safeText = searchText {
-            itens = storage.loadItensBy(text: safeText)
+            itens = storage.loadItensBy(text: safeText, category: selectedCategory)
         } else {
-            itens = storage.loadItens()
+            itens = storage.loadItens(category: selectedCategory)
         }
         
         tableView.reloadData()

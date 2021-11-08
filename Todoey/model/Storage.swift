@@ -30,15 +30,30 @@ class Storage {
         }
     }
     
-    func loadItens() -> [Item] {
-        return findByRequest(request: Item.fetchRequest())
+    func loadItens(category: Category? = nil) -> [Item] {
+        
+        let request: NSFetchRequest<Item> = Item.fetchRequest()
+
+        if let categoryName = category?.name {
+            request.predicate = NSPredicate(format: "parentCategory.name MATCHES %@", categoryName)
+        }
+        
+        return findByRequest(request: request)
     }
     
-    func loadItensBy(text: String) -> [Item] {
+    func loadItensBy(text: String, category: Category?) -> [Item] {
         
         let request: NSFetchRequest<Item> = Item.fetchRequest()
         
-        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", text)
+        var listOfPredicates:[NSPredicate] = [NSPredicate(format: "title CONTAINS[cd] %@", text)]
+        
+        if let categoryName = category?.name {
+            listOfPredicates.append(NSPredicate(format: "parentCategory.name MATCHES %@", categoryName))
+        }
+        
+        let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: listOfPredicates)
+        
+        request.predicate = compoundPredicate
         
         request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
         

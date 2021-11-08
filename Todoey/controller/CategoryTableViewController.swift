@@ -10,7 +10,7 @@ import UIKit
 
 class CategoryTableViewController: UITableViewController {
 
-    private var itens: [Category] = []
+    private var categories: [Category] = []
     
     private lazy var storage: Storage = {
         return Storage()
@@ -18,7 +18,7 @@ class CategoryTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        itens = storage.loadCategories()
+        categories = storage.loadCategories()
     }
 
 
@@ -36,14 +36,14 @@ class CategoryTableViewController: UITableViewController {
                 let category = Category(context: self.storage.context)
                 category.name = text
                 
-                self.itens.append(category)
+                self.categories.append(category)
                 self.save()
             }
         }
         
         alert.addTextField { alertTextField in
             finalText = alertTextField
-            finalText.placeholder = "Create New Item"
+            finalText.placeholder = "Create New Category"
         }
         
         alert.addAction(action)
@@ -58,13 +58,13 @@ class CategoryTableViewController: UITableViewController {
     
     // MARK: - Table view data source
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return itens.count
+        return categories.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
         
-        let item = itens[indexPath.row]
+        let item = categories[indexPath.row]
         
         cell.textLabel?.text = item.name
                 
@@ -72,4 +72,15 @@ class CategoryTableViewController: UITableViewController {
     }
     
     // MARK: - Table view delegate
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "goToItems", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if let indexPath = tableView.indexPathForSelectedRow, let vc = segue.destination as? TodoListViewController {
+            vc.selectedCategory = categories[indexPath.row]
+        }
+    }
 }
