@@ -33,11 +33,11 @@ class CategoryTableViewController: UITableViewController {
             
             if let text = finalText.text {
                 
-                let category = Category(context: self.storage.context)
+                let category = Category()
                 category.name = text
                 
                 self.categories.append(category)
-                self.save()
+                self.save(category: category)
             }
         }
         
@@ -51,8 +51,8 @@ class CategoryTableViewController: UITableViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    private func save() {
-        self.storage.save()
+    private func save(category: Category) {
+        self.storage.save(category: category)
         self.tableView.reloadData()
     }
     

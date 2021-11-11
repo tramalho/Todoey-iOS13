@@ -67,13 +67,13 @@ class TodoListViewController: UITableViewController {
             
             if let text = finalText.text {
                 
-                let item = Item(context: self.storage.context)
-                item.title = text
-                item.done = false
-                item.parentCategory = self.selectedCategory
-                
-                self.itens.append(item)
-                self.save()
+//                let item = Item(context: self.storage.context)
+//                item.title = text
+//                item.done = false
+//                item.parentCategory = self.selectedCategory
+//
+//                self.itens.append(item)
+//                self.save()
             }
         }
         
@@ -89,7 +89,7 @@ class TodoListViewController: UITableViewController {
     }
     
     private func save() {
-        self.storage.save()
+        //self.storage.save()
         self.tableView.reloadData()
     }
     

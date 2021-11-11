@@ -8,23 +8,28 @@
 
 import Foundation
 import UIKit
-import CoreData
+import RealmSwift
 
 
 
 class Storage {
         
-    private (set) lazy var context: NSManagedObjectContext = {
-        let delegate = UIApplication.shared.delegate as! AppDelegate
-        let context = delegate.persistentContainer.viewContext
-        return context
+    private lazy var realm: Realm? = {
+        var realm:Realm? = nil
+        do {
+            realm = try Realm()
+        } catch  {
+            print(error.localizedDescription)
+        }
+        
+        return realm
     }()
     
   
-    func save() {
+    func save(category: Category) {
         
         do {
-            try context.save()
+            try realm?.write({ realm?.add(category) })
         } catch  {
             print(error.localizedDescription)
         }
@@ -32,47 +37,52 @@ class Storage {
     
     func loadItens(category: Category? = nil) -> [Item] {
         
-        let request: NSFetchRequest<Item> = Item.fetchRequest()
-
-        if let categoryName = category?.name {
-            request.predicate = NSPredicate(format: "parentCategory.name MATCHES %@", categoryName)
-        }
+//        let request: NSFetchRequest<Item> = Item.fetchRequest()
+//
+//        if let categoryName = category?.name {
+//            request.predicate = NSPredicate(format: "parentCategory.name MATCHES %@", categoryName)
+//        }
+//
+//        return findByRequest(request: request)
         
-        return findByRequest(request: request)
+        return []
     }
     
     func loadItensBy(text: String, category: Category?) -> [Item] {
         
-        let request: NSFetchRequest<Item> = Item.fetchRequest()
+//        let request: NSFetchRequest<Item> = Item.fetchRequest()
+//
+//        var listOfPredicates:[NSPredicate] = [NSPredicate(format: "title CONTAINS[cd] %@", text)]
+//
+//        if let categoryName = category?.name {
+//            listOfPredicates.append(NSPredicate(format: "parentCategory.name MATCHES %@", categoryName))
+//        }
+//
+//        let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: listOfPredicates)
+//
+//        request.predicate = compoundPredicate
+//
+//        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+//
+//        return findByRequest(request: request)
         
-        var listOfPredicates:[NSPredicate] = [NSPredicate(format: "title CONTAINS[cd] %@", text)]
-        
-        if let categoryName = category?.name {
-            listOfPredicates.append(NSPredicate(format: "parentCategory.name MATCHES %@", categoryName))
-        }
-        
-        let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: listOfPredicates)
-        
-        request.predicate = compoundPredicate
-        
-        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
-        
-        return findByRequest(request: request)
+        return []
     }
     
     func loadCategories() -> [Category] {
-        return findByRequest(request: Category.fetchRequest())
+        // return findByRequest(request: Category.fetchRequest())
+        return []
     }
     
-    private func findByRequest<T>(request: NSFetchRequest<T>) -> [T] {
-        var itens: [T] = []
-        
-        do {
-            itens = try context.fetch(request)
-        } catch  {
-            print(error.localizedDescription)
-        }
-        
-        return itens
-}
+//    private func findByRequest<T>(request: NSFetchRequest<T>) -> [T] {
+//        var itens: [T] = []
+//
+//        do {
+//            // itens = try context.fetch(request)
+//        } catch  {
+//            print(error.localizedDescription)
+//        }
+//
+//        return itens
+//}
 }
