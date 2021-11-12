@@ -7,10 +7,11 @@
 //
 
 import UIKit
+import RealmSwift
 
 class CategoryTableViewController: UITableViewController {
 
-    private var categories: [Category] = []
+    private var categories: Results<Category>?
     
     private lazy var storage: Storage = {
         return Storage()
@@ -35,8 +36,6 @@ class CategoryTableViewController: UITableViewController {
                 
                 let category = Category()
                 category.name = text
-                
-                self.categories.append(category)
                 self.save(category: category)
             }
         }
@@ -58,16 +57,15 @@ class CategoryTableViewController: UITableViewController {
     
     // MARK: - Table view data source
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return categories.count
+        return categories?.count ?? 0
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
         
-        let item = categories[indexPath.row]
+        let item = categories?[indexPath.row]
+        cell.textLabel?.text = item?.name
         
-        cell.textLabel?.text = item.name
-                
         return cell
     }
     
@@ -80,7 +78,7 @@ class CategoryTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if let indexPath = tableView.indexPathForSelectedRow, let vc = segue.destination as? TodoListViewController {
-            vc.selectedCategory = categories[indexPath.row]
+            vc.selectedCategory = categories?[indexPath.row]
         }
     }
 }

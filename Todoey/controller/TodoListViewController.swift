@@ -7,12 +7,13 @@
 //
 
 import UIKit
+import RealmSwift
 
 class TodoListViewController: UITableViewController {
     
     var selectedCategory: Category? = nil
     
-    private var itens: [Item] = []
+    private var itens: Results<Item>?
     
     private lazy var storage: Storage = {
         return Storage()
@@ -28,17 +29,18 @@ class TodoListViewController: UITableViewController {
     //MARK - Tableview DataSource methods
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return itens.count
+        return itens?.count ?? 0
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
         
-        let item = itens[indexPath.row]
-        
-        cell.textLabel?.text = item.title
-        
-        cell.accessoryType = item.done ? .checkmark : .none
+        if let item = itens?[indexPath.row] {
+            
+            cell.textLabel?.text = item.title
+            
+            cell.accessoryType = item.done ? .checkmark : .none
+        }
         
         return cell
     }
@@ -46,13 +48,14 @@ class TodoListViewController: UITableViewController {
     //MARK - Tableview Delegate Methods
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let item = itens[indexPath.row]
-        
-        item.done = !item.done
-                
-        save()
-        
-        tableView.deselectRow(at: indexPath, animated: true)
+        if let item = itens?[indexPath.row] {
+            
+            item.done = !item.done
+            
+            save(item: item)
+            
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
     }
                 
     //MARK - Add Itens
@@ -67,13 +70,9 @@ class TodoListViewController: UITableViewController {
             
             if let text = finalText.text {
                 
-//                let item = Item(context: self.storage.context)
-//                item.title = text
-//                item.done = false
-//                item.parentCategory = self.selectedCategory
-//
-//                self.itens.append(item)
-//                self.save()
+                let item = Item()
+                item.title = text
+                self.save(item: item)
             }
         }
         
@@ -88,16 +87,21 @@ class TodoListViewController: UITableViewController {
         
     }
     
-    private func save() {
-        //self.storage.save()
-        self.tableView.reloadData()
+    private func save(item: Item) {
+        if let safeCategory = self.selectedCategory {
+            self.storage.save(item: item, category: safeCategory)
+            self.tableView.reloadData()
+        }
     }
     
     private func loadItens(searchText: String? = nil) {
+        
+        guard let safeCategory = selectedCategory else { return }
+        
         if let safeText = searchText {
-            itens = storage.loadItensBy(text: safeText, category: selectedCategory)
+            itens = storage.loadItensBy(text: safeText, category: safeCategory)
         } else {
-            itens = storage.loadItens(category: selectedCategory)
+            itens = storage.loadItens(category: safeCategory)
         }
         
         tableView.reloadData()

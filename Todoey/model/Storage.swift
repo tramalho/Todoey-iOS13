@@ -35,54 +35,24 @@ class Storage {
         }
     }
     
-    func loadItens(category: Category? = nil) -> [Item] {
+    func save(item: Item, category: Category) {
         
-//        let request: NSFetchRequest<Item> = Item.fetchRequest()
-//
-//        if let categoryName = category?.name {
-//            request.predicate = NSPredicate(format: "parentCategory.name MATCHES %@", categoryName)
-//        }
-//
-//        return findByRequest(request: request)
-        
-        return []
+        do {
+            try realm?.write({ category.items.append(item) })
+        } catch  {
+            print(error.localizedDescription)
+        }
     }
     
-    func loadItensBy(text: String, category: Category?) -> [Item] {
-        
-//        let request: NSFetchRequest<Item> = Item.fetchRequest()
-//
-//        var listOfPredicates:[NSPredicate] = [NSPredicate(format: "title CONTAINS[cd] %@", text)]
-//
-//        if let categoryName = category?.name {
-//            listOfPredicates.append(NSPredicate(format: "parentCategory.name MATCHES %@", categoryName))
-//        }
-//
-//        let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: listOfPredicates)
-//
-//        request.predicate = compoundPredicate
-//
-//        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
-//
-//        return findByRequest(request: request)
-        
-        return []
+    func loadItens(category: Category) -> Results<Item>? {
+        return category.items.sorted(byKeyPath: "title", ascending: true)
     }
     
-    func loadCategories() -> [Category] {
-        // return findByRequest(request: Category.fetchRequest())
-        return []
+    func loadItensBy(text: String, category: Category) -> Results<Item>? {
+        return category.items.sorted(byKeyPath: "title", ascending: true)
     }
     
-//    private func findByRequest<T>(request: NSFetchRequest<T>) -> [T] {
-//        var itens: [T] = []
-//
-//        do {
-//            // itens = try context.fetch(request)
-//        } catch  {
-//            print(error.localizedDescription)
-//        }
-//
-//        return itens
-//}
+    func loadCategories() -> Results<Category>? {
+        return realm?.objects(Category.self)
+    }
 }
