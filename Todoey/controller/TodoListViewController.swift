@@ -49,12 +49,13 @@ class TodoListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if let item = itens?[indexPath.row] {
+                        
+            storage.updateSelected(item:item)
             
-            item.done = !item.done
-            
-            save(item: item)
+            tableView.reloadData()
             
             tableView.deselectRow(at: indexPath, animated: true)
+
         }
     }
                 

@@ -44,6 +44,18 @@ class Storage {
         }
     }
     
+    
+    func updateSelected(item: Item) {
+        
+        do {
+            try realm?.write({
+                item.done = !item.done
+            })
+        } catch  {
+            print(error.localizedDescription)
+        }
+    }
+    
     func loadItens(category: Category) -> Results<Item>? {
         return category.items.sorted(byKeyPath: "title", ascending: true)
     }
