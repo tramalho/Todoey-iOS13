@@ -73,6 +73,7 @@ class TodoListViewController: UITableViewController {
                 
                 let item = Item()
                 item.title = text
+                item.dateCreated = Date()
                 self.save(item: item)
             }
         }

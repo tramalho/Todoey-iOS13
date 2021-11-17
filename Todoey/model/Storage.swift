@@ -61,7 +61,7 @@ class Storage {
     }
     
     func loadItensBy(text: String, category: Category) -> Results<Item>? {
-        return category.items.sorted(byKeyPath: "title", ascending: true)
+        return category.items.filter("title CONTAINS[cd] %@", text).sorted(byKeyPath: "dateCreated", ascending: true)
     }
     
     func loadCategories() -> Results<Category>? {
