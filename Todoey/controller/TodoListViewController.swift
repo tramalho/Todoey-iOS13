@@ -110,7 +110,7 @@ class TodoListViewController: SwipeTableViewController {
     }
     
     override func update(index: Int) {
-        storage.delete(index: index, category: selectedCategory)
+        storage.delete(item: itens?[index])
     }
 }
 
