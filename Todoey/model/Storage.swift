@@ -45,6 +45,19 @@ class Storage {
     }
     
     
+    func delete(index: Int, category: Category?) {
+        
+        if let safeCategories = category {
+            
+            do {
+                try realm?.write({ safeCategories.items.remove(at: index) })
+            } catch  {
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    
     func updateSelected(item: Item) {
         
         do {
