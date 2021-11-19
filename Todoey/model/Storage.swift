@@ -67,4 +67,16 @@ class Storage {
     func loadCategories() -> Results<Category>? {
         return realm?.objects(Category.self)
     }
+    
+    func delete(category: Category?) {
+        if let safeCategories = category {
+            do {
+                try realm?.write({
+                    self.realm?.delete(safeCategories)
+                })
+            } catch  {
+                print(error.localizedDescription)
+            }
+        }
+    }
 }
