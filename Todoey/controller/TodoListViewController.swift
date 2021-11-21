@@ -11,6 +11,7 @@ import RealmSwift
 import ChameleonFramework
 
 class TodoListViewController: SwipeTableViewController {
+    @IBOutlet weak var searchBar: UISearchBar!
     
     var selectedCategory: Category? = nil
     
@@ -24,6 +25,30 @@ class TodoListViewController: SwipeTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         loadItens()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
+        if let safeCategory = selectedCategory, let color = UIColor(hexString:  safeCategory.background) {
+            
+            let contrastColor = ContrastColorOf(color, returnFlat: true)
+            
+            searchBar.backgroundColor = color
+            searchBar.searchTextField.backgroundColor = .white
+            searchBar.tintColor = color
+            
+            let navBar = navigationController?.navigationBar
+            
+            navBar?.tintColor = contrastColor
+            
+            navBar?.barTintColor = color
+            
+            navBar?.titleTextAttributes = [NSAttributedString.Key.foregroundColor : contrastColor]
+            
+            navBar?.shadowImage = UIImage()
+            
+            title = safeCategory.name
+        }
     }
 
     //MARK - Tableview DataSource methods
@@ -40,9 +65,9 @@ class TodoListViewController: SwipeTableViewController {
             
             cell.textLabel?.text = item.title
             
-            if let count = itens?.count, let safeCategory = selectedCategory, let color = UIColor(hexString: safeCategory.background) {
+            if let safeCategory = selectedCategory, let color = UIColor(hexString: safeCategory.background) {
                 
-                let backgroundColor = color.darken(byPercentage: CGFloat(indexPath.row) / CGFloat(count))!
+                let backgroundColor = color.darken(byPercentage: CGFloat(0.1 * Double(indexPath.row + 1)))!
             
                 cell.backgroundColor = backgroundColor
                 cell.textLabel?.textColor = ContrastColorOf(backgroundColor, returnFlat: true)

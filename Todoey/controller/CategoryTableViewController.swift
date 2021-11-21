@@ -23,6 +23,12 @@ class CategoryTableViewController: SwipeTableViewController {
         super.viewDidLoad()
         categories = storage.loadCategories()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        if let navBar = navigationController?.navigationBar {
+            navBar.barTintColor = UIColor(hexString: "1D9BF6")
+        }
+    }
 
 
     // MARK: - Data Manipulation Mehods
